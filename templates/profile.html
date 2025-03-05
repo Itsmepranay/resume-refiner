@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+    <h2>Upload Your LaTeX Resume</h2>
+    <form action="/profile" method="post" enctype="multipart/form-data">
+        <label>Username:</label>
+        <input type="text" name="username" required>
+        <br>
+        <label>Upload LaTeX File:</label>
+        <input type="file" name="latex_file" required>
+        <br>
+        <input type="submit" value="Save">
+    </form>
+    <a href="/">Go Back</a>
+</body>
+</html>
