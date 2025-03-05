@@ -16,7 +16,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 PDFLATEX_PATH = r"C:\Users\prana\AppData\Local\Programs\MiKTeX\miktex\bin\x64\pdflatex.exe"
 
 # Eden AI API Key (replace with your actual key)
-EDEN_AI_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNzc5NmQ0M2UtN2M0MS00YmZjLTlmMTEtYzVmMTllOGNhODQzIiwidHlwZSI6ImFwaV90b2tlbiJ9.fNbGuzFXtSPih7LNOvRFZAFxqE53f_zkWKEifbAzSs4"
+EDEN_AI_API_KEY = "YOUR_API_KEY"
 
 
 def convert_markdown_to_latex(text):
