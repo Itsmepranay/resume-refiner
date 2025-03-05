@@ -16,7 +16,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 PDFLATEX_PATH = r"C:\Users\prana\AppData\Local\Programs\MiKTeX\miktex\bin\x64\pdflatex.exe"
 
 # Eden AI API Key (replace with your actual key)
-EDEN_AI_API_KEY = "YOUR_API_KEY"
+EDEN_AI_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNzc5NmQ0M2UtN2M0MS00YmZjLTlmMTEtYzVmMTllOGNhODQzIiwidHlwZSI6ImFwaV90b2tlbiJ9.fNbGuzFXtSPih7LNOvRFZAFxqE53f_zkWKEifbAzSs4"
 
 
 def convert_markdown_to_latex(text):
@@ -42,18 +42,6 @@ def clean_generated_summary(summary):
     return cleaned.strip()
 
 
-def extract_original_summary(latex_content):
-    """
-    Extracts the existing summary text from the LaTeX content.
-    Looks for text between \section{Summary} and the next \section (or end-of-file).
-    """
-    pattern = r"\\section\{Summary\}([\s\S]*?)(?=\\section|$)"
-    match = re.search(pattern, latex_content)
-    if match:
-        return match.group(1).strip()
-    return ""
-
-
 def update_summary(latex_content, new_summary):
     """
     Replaces the content in the Summary section with new_summary.
@@ -67,25 +55,25 @@ def update_summary(latex_content, new_summary):
     return updated_content
 
 
-def generate_summary(job_desc, original_summary, specialized_instruction):
+def generate_summary(job_desc, entire_resume, specialized_instruction):
     """
     Calls the Eden AI API to generate a concise professional summary based on the job description,
-    original summary context, and any specialized instructions.
+    using the entire resume content as context and any specialized instructions.
     """
     url = "https://api.edenai.run/v2/multimodal/chat"
     
-    # Create the prompt including the specialized instruction if provided.
     prompt_text = (
-        f"Given the current professional summary context:\n"
-        f"\"{original_summary}\"\n\n"
-        f"and the following job description:\n"
+        "Given the complete resume context below:\n"
+        f"\"{entire_resume}\"\n\n"
+        "and the following job description:\n"
         f"\"{job_desc}\"\n\n"
     )
     if specialized_instruction:
         prompt_text += f"Also consider the following specialized instructions:\n\"{specialized_instruction}\"\n\n"
     
     prompt_text += (
-        "Generate a concise, authentic, and detailed professional summary that aligns with the user's experience.dont write any thing else execpt the summary.be creative and feel free to change the wording of the original summary"
+        "Generate a concise, authentic, and detailed professional summary that aligns with the user's experience. "
+        "Don't write anything else except the summary. Be creative and feel free to change the wording of the original.dont repeat the infromation that is already present in the resume(like the academic details) in the summary it is only for the context"
     )
     
     payload = {
@@ -182,20 +170,16 @@ def index():
         if not os.path.exists(original_tex_file):
             return "User not found. Please register first.", 400
         
-        # Read original LaTeX resume
+        # Read the complete LaTeX resume (without altering it)
         with open(original_tex_file, "r", encoding="utf-8") as f:
-            original_latex = f.read()
-        print("Original LaTeX content (first 300 chars):", repr(original_latex[:300]))
+            entire_resume = f.read()
+        print("Entire resume content (first 300 chars):", repr(entire_resume[:300]))
         
-        # Extract original summary for context
-        original_summary = extract_original_summary(original_latex)
-        print("Original summary context:", repr(original_summary))
+        # Generate new summary using the entire resume as context
+        new_summary = generate_summary(job_desc, entire_resume, specialized_instruction)
         
-        # Generate new summary using job description, original summary, and specialized instructions
-        new_summary = generate_summary(job_desc, original_summary, specialized_instruction)
-        
-        # Create updated LaTeX content without modifying the original file
-        updated_latex = update_summary(original_latex, new_summary)
+        # Create updated LaTeX content (non-destructive; original remains unchanged)
+        updated_latex = update_summary(entire_resume, new_summary)
         print("Updated LaTeX content (first 300 chars):", repr(updated_latex[:300]))
         
         # Save the updated LaTeX file in the output folder with a timestamp
