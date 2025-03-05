@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Resume Refiner</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    form {
+      background: #fff;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    textarea {
+      resize: vertical;
+    }
+    button {
+      display: block;
+      width: 100%;
+      background: #27ae60;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #2ecc71;
+    }
+    p {
+      text-align: center;
+      margin-top: 20px;
+    }
+    a {
+      color: #3498db;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Refine Your Resume Summary</h1>
+  <form method="POST">
+      <label for="username">Username:</label>
+      <input type="text" name="username" id="username" required>
+      
+      <label for="job_desc">Job Description:</label>
+      <textarea name="job_desc" id="job_desc" rows="5" required></textarea>
+      
+      <label for="specialized">Specialized Instruction (optional):</label>
+      <textarea name="specialized" id="specialized" rows="3" placeholder="E.g., emphasize advanced EDA tools"></textarea>
+      
+      <button type="submit">Refine & Generate PDF</button>
+  </form>
+  <p>If you're a new user, <a href="{{ url_for('register') }}">register here</a>.</p>
+</body>
+</html>
